@@ -1,0 +1,193 @@
+﻿@using Nop.Core;
+@using Nop.Services.Common;
+@using Nop.Core.Infrastructure
+@using Nop.Plugin.Pricing.PreciousMetals.Model
+
+@model ExtendedProductModel
+
+<script>
+    $(document).ready(function() {
+        $("#@Html.IdFor(model => model.IsPreciousMetalEnabled)").click(togglePreciousMetals);
+        togglePreciousMetals();
+    });
+
+    function togglePreciousMetals() {
+        if ($('#@Html.IdFor(model => model.IsPreciousMetalEnabled)').is(':checked')) {
+            $('#pnl_pm_MetalType').show();
+            $('#pnlQuoteType').show();
+            $('#pnlTierPriceType').show();
+            $('#pnlLowerAmount').show();
+            $('#pnl_pm_Weight').show();
+            $('#pnlWeightUnit').show();
+            $('#pnlMathType').show();
+            $('#pnlPercentMarkup').show();
+            $('#pnlFlatMarkup').show();
+            $('#pnlPriceRounding').show();
+            $('#pnlPriceRoundingNumber').show();
+        } else {
+            $('#pnl_pm_MetalType').hide();
+            $('#pnlQuoteType').hide();
+            $('#pnlTierPriceType').hide();
+            $('#pnlLowerAmount').hide();
+            $('#pnl_pm_Weight').hide();
+            $('#pnlWeightUnit').hide();
+            $('#pnlMathType').hide();
+            $('#pnlPercentMarkup').hide();
+            $('#pnlFlatMarkup').hide();
+            $('#pnlPriceRounding').hide();
+            $('#pnlPriceRoundingNumber').hide();
+        }
+    }
+</script>
+
+@{
+    IGenericAttributeService    genericAttributeService    = EngineContext.Current.Resolve<Nop.Services.Common.IGenericAttributeService>( );
+    IWorkContext                workContext                = EngineContext.Current.Resolve<Nop.Core.IWorkContext>( );
+
+    const string hidePreciousMetalsBlockAttributeName = "ProductPage.PreciousMetalsBlock";
+    bool hidePreciousMetalsBlock = genericAttributeService.GetAttribute<bool>(workContext.CurrentCustomer, hidePreciousMetalsBlockAttributeName, defaultValue: true);
+}
+
+<nop-panel asp-name="product-precious-metals" 
+           asp-icon="fa fa-eur" 
+           asp-title="Precious Metals" 
+           asp-hide-block-attribute-name="@hidePreciousMetalsBlockAttributeName" 
+           asp-hide="@hidePreciousMetalsBlock" 
+           asp-advanced="false">
+
+    <div class="panel-body">
+
+        <div class="form-group">
+            <div class="col-md-3">
+                @*<nop-override-store-checkbox asp-for="IsPreciousMetalEnabled" asp-input="IsPreciousMetalEnabled" asp-store-scope="@Model.IsPreciousMetalEnabled" />*@
+                <nop-label asp-for="IsPreciousMetalEnabled" />
+            </div>
+            <div class="col-md-9">
+                <nop-editor asp-for="IsPreciousMetalEnabled" />
+                <span asp-validation-for="IsPreciousMetalEnabled"></span>
+            </div>
+        </div>
+
+        <nop-nested-setting asp-for="IsPreciousMetalEnabled">
+
+            <div class="form-group advanced-setting" id="pnl_pm_MetalType">
+                <div class="col-md-3">
+                    <nop-label asp-for="MetalType" />
+                </div>
+                <div class="col-md-9">
+                    <nop-select asp-for="MetalType" asp-items="Model.AvailableMetalTypes" />
+                    <span asp-validation-for="MetalType"></span>
+                </div>
+            </div>            
+
+            <div class="form-group advanced-setting" id="pnlQuoteType">
+                <div class="col-md-3">
+                    <nop-label asp-for="QuoteType" />
+                </div>
+                <div class="col-md-9">
+                    <nop-select asp-for="QuoteType" asp-items="Model.AvailableQuoteTypes" />
+                    <span asp-validation-for="QuoteType"></span>
+                </div>
+            </div>
+
+            <div class="form-group advanced-setting" id="pnlTierPriceType">
+                <div class="col-md-3">
+                    <nop-label asp-for="TierPriceType" />
+                </div>
+                <div class="col-md-9">
+                    <nop-select asp-for="TierPriceType" asp-items="Model.AvailableTierPricingTypes" />
+                    <span asp-validation-for="TierPriceType"></span>
+                </div>
+            </div>
+
+            <div class="form-group advanced-setting" id="pnlLowerAmount">
+                <div class="col-md-3">
+                    <nop-label asp-for="LowerAmount" />
+                </div>
+                <div class="col-md-9">
+                    <nop-editor asp-for="LowerAmount" asp-postfix="@Model.PrimaryStoreCurrencyCode" />
+                    <span asp-validation-for="LowerAmount"></span>
+                </div>
+            </div>
+
+            <div class="form-group advanced-setting" id="pnl_pm_Weight">
+                <div class="col-md-3">
+                    <nop-label asp-for="pm_Weight" />
+                </div>
+                <div class="col-md-9">
+                    <nop-editor asp-for="pm_Weight" />
+                    <span asp-validation-for="pm_Weight"></span>
+                </div>
+            </div>
+
+            <div class="form-group advanced-setting" id="pnlWeightUnit">
+                <div class="col-md-3">
+                    <nop-label asp-for="WeightUnit" />
+                </div>
+                <div class="col-md-9">
+                    <nop-select asp-for="WeightUnit" asp-items="Model.AvailableWeightUnits" />
+                    <span asp-validation-for="WeightUnit"></span>
+                </div>
+            </div>
+
+            <div class="form-group advanced-setting" id="pnlMathType">
+                <div class="col-md-3">
+                    <nop-label asp-for="MathType" />
+                </div>
+                <div class="col-md-9">
+                    <nop-select asp-for="MathType" asp-items="Model.AvailableMathTypes" />
+                    <span asp-validation-for="MathType"></span>
+                </div>
+            </div>
+
+            <div class="form-group advanced-setting" id="pnlPercentMarkup">
+                <div class="col-md-3">
+                    <nop-label asp-for="PercentMarkup" />
+                </div>
+                <div class="col-md-9">
+                    @*<nop-editor asp-for="PercentMarkup" asp-postfix="%" />*@
+                    <nop-editor asp-for="PercentMarkup" />
+                    <span asp-validation-for="PercentMarkup"></span>
+                </div>
+            </div>
+
+            <div class="form-group advanced-setting" id="pnlFlatMarkup">
+                <div class="col-md-3">
+                    <nop-label asp-for="FlatMarkup" />
+                </div>
+                <div class="col-md-9">
+                    <nop-editor asp-for="FlatMarkup" asp-postfix="@Model.PrimaryStoreCurrencyCode" />
+                    <span asp-validation-for="FlatMarkup"></span>
+                </div>
+            </div>
+
+            <div class="form-group advanced-setting" id="pnlPriceRounding">
+                <div class="col-md-3">
+                    <nop-label asp-for="PriceRounding" />
+                </div>
+                <div class="col-md-9">
+                    <nop-select asp-for="PriceRounding" asp-items="Model.AvailablePriceRoundingTypes" />
+                    <span asp-validation-for="PriceRounding"></span>
+                </div>
+            </div>
+
+            <div class="form-group advanced-setting" id="pnlPriceRoundingNumber">
+                <div class="col-md-3">
+                    <nop-label asp-for="PriceRoundingNumber" />
+                </div>
+                <div class="col-md-9">
+                    <nop-editor asp-for="PriceRoundingNumber" />
+                    <span asp-validation-for="PriceRoundingNumber"></span>
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                <button type="submit" name="save" class="btn bg-blue"><i class="fa fa-floppy-o"></i>@T("Admin.Common.Save")</button>
+                <button type="submit" name="save-continue" class="btn bg-blue"><i class="fa fa-floppy-o"></i>@T("Admin.Common.SaveContinue")</button>
+            </div>
+
+        </nop-nested-setting>
+
+    </div>
+
+</nop-panel>

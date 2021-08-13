@@ -1,0 +1,11 @@
+{
+  "Group": "Pricing options",
+  "FriendlyName": "Precious Metals",
+  "SystemName": "Pricing.PreciousMetals",
+  "Version": "2.01",
+  "SupportedVersions": [ "4.30" ],
+  "Author": "SDE Computing",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Pricing.PreciousMetals.dll",
+  "Description": "Dynamic Pricing for Precious Metals"
+}

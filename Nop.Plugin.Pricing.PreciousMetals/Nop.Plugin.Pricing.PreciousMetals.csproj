@@ -1,0 +1,102 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Copyright></Copyright> 
+    <Company>SDE Computing</Company> 
+    <Authors>SDE Computing</Authors>
+    <PackageLicenseUrl></PackageLicenseUrl> 
+    <PackageProjectUrl>http://www.sdecomputing.nl/</PackageProjectUrl> 
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Pricing.PreciousMetals</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Pricing.PreciousMetals</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CS\**" />
+    <EmbeddedResource Remove="CS\**" />
+    <None Remove="CS\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Domain\PreciousMetalsDetail - Copy.cs" />
+    <Compile Remove="Domain\PreciousMetalsQuote - Copy.cs" />
+    <Compile Remove="PreciousMetalsDefaults.cs" />
+    <Compile Remove="ProductControllerRedirectionAttribute.cs" />
+    <Compile Remove="Services\PreciousMetalService.cs" />
+    <Compile Remove="Services\PreciousMetalsPriceCalculationService - Copy.cs" />
+    <Compile Remove="Services\PreciousMetalsPriceCalculationService.cs.v1.cs" />
+    <Compile Remove="Services\PreciousMetalsProductService.cs" />
+    <Compile Remove="Services\PreciousMetalsQuoteService - Copy.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="logo.jpg" />
+    <None Remove="logo.png" />
+    <None Remove="Services\PreciousMetalsPriceCalculationService.cs.v1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="plugin.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Nop.Core\Nop.Core.csproj" />
+    <ProjectReference Include="..\..\Libraries\Nop.Data\Nop.Data.csproj" />
+    <ProjectReference Include="..\..\Libraries\Nop.Services\Nop.Services.csproj" />
+    <ProjectReference Include="..\..\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
+    <ProjectReference Include="..\..\Presentation\Nop.Web\Nop.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Views\Configure.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\PreciousMetals\Configure.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\PreciousMetals\ExtendedProductModel.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.4.*" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.7.0" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.4.*" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.4.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\PreciousMetals\" />
+  </ItemGroup>
+  
+  <!-- This target execute after "Build" target -->
+  <Target Name="NopTarget" AfterTargets="Build">
+    <!-- Delete unnecessary libraries from plugins path -->
+    <MSBuild Projects="$(MSBuildProjectDirectory)\..\..\Build\ClearPluginAssemblies.proj" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+  </Target>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="if EXIST &quot;$(TargetPath)&quot; (&#xD;&#xA;echo Deleting $(TargetPath)&#xD;&#xA;del  &quot;$(TargetPath)&quot;&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;if EXIST &quot;$(SolutionDir)\Presentation\Nop.Web\Plugins\bin\$(TargetFileName)&quot; (&#xD;&#xA;echo Deleting $(SolutionDir)\Presentation\Nop.Web\Plugins\bin\$(TargetFileName)&#xD;&#xA;del  &quot;$(SolutionDir)\Presentation\Nop.Web\Plugins\bin\$(TargetFileName)&quot;&#xD;&#xA;)" />
+  </Target>
+
+</Project>

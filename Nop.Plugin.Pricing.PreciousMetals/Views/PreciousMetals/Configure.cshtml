@@ -1,0 +1,77 @@
+﻿@model Nop.Plugin.Pricing.PreciousMetals.Model.ConfigurationModel
+@{
+	Layout = "_ConfigurePlugin";
+	//active menu item (system name)
+	Html.SetActiveMenuItemSystemName("Plugin.PreciousMetals");
+}
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+
+@using Nop.Plugin.Pricing.PreciousMetals.Domain;
+
+<form asp-controller="PreciousMetals" asp-action="Configure" method="post">
+    <div class="panel-group">        
+        <div class="panel panel-default">
+            <div class="panel-body">
+
+                @*CachePeriodInMinutes*@ 
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="CachePeriodInMinutes_OverrideForStore" asp-input="CachePeriodInMinutes" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="CachePeriodInMinutes" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="CachePeriodInMinutes" />
+                        <span asp-validation-for="CachePeriodInMinutes"></span>
+                    </div>
+                </div>                
+
+                @*Timeout*@
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="ExcludeFromSubtotalDiscounts_OverrideForStore" asp-input="ExcludeFromSubtotalDiscounts" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="ExcludeFromSubtotalDiscounts" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ExcludeFromSubtotalDiscounts" />
+                        <span asp-validation-for="ExcludeFromSubtotalDiscounts"></span>
+                    </div>
+                </div>  
+
+                @*QuoteProvider*@
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="QuoteProvider_OverrideForStore" asp-input="QuoteProvider" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="QuoteProvider" />
+                    </div>
+                    <div class="col-md-9">
+                        @*<nop-editor asp-for="QuoteProvider" />*@
+                        <select asp-for="QuoteProvider" asp-items="SupportedProviders.Items" class="dropdownlists"></select>
+                        <span asp-validation-for="QuoteProvider"></span>
+                    </div>
+                </div> 
+
+                @*xIgniteToken*@
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="xIgniteToken_OverrideForStore" asp-input="xIgniteToken" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="xIgniteToken" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="xIgniteToken" />
+                        <span asp-validation-for="xIgniteToken"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-9">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
